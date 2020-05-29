@@ -8,6 +8,9 @@ namespace WebPastas
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+
+            // Agrego mi filtro
+            filters.Add(new Filters.VerificaSession());
         }
     }
 }
