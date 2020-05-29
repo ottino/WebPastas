@@ -96,3 +96,5 @@ C:\Users\maxi\source\repos\WebPastas\WebPastas\obj\Release\WebPastas.csproj.Copy
 C:\Users\maxi\source\repos\WebPastas\WebPastas\obj\Release\WebPastas.dll
 C:\Users\maxi\source\repos\WebPastas\WebPastas\obj\Release\WebPastas.pdb
 C:\Users\maxi\source\repos\WebPastas\WebPastas\obj\Release\WebPastas.csprojResolveAssemblyReference.cache
+C:\Users\maxi\source\repos\WebPastas\WebPastas\bin\EntityFramework.dll
+C:\Users\maxi\source\repos\WebPastas\WebPastas\bin\EntityFramework.xml
