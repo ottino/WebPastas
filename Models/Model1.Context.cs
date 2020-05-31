@@ -13,10 +13,10 @@ namespace WebPastas.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class wi200122_pastas_tEntities2 : DbContext
+    public partial class wi200122_pastas_tEntities : DbContext
     {
-        public wi200122_pastas_tEntities2()
-            : base("name=wi200122_pastas_tEntities2")
+        public wi200122_pastas_tEntities()
+            : base("name=wi200122_pastas_tEntities")
         {
         }
     
@@ -25,6 +25,10 @@ namespace WebPastas.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<usuario> usuario { get; set; }
+        public DbSet<seg_modulo> seg_modulo { get; set; }
+        public DbSet<seg_operacion> seg_operacion { get; set; }
+        public DbSet<seg_rol> seg_rol { get; set; }
+        public DbSet<seg_rol_operacion> seg_rol_operacion { get; set; }
+        public DbSet<seg_usuario> seg_usuario { get; set; }
     }
 }

@@ -19,9 +19,9 @@ namespace WebPastas.Controllers
         {
             try
             {
-                using (Models.wi200122_pastas_tEntities2 db = new Models.wi200122_pastas_tEntities2())
+                using (Models.wi200122_pastas_tEntities db = new Models.wi200122_pastas_tEntities())
                 {
-                    var oUser = (from d in db.usuario
+                    var oUser = (from d in db.seg_usuario
                                  where d.nombre == User.Trim()
                                          && d.password == Pass.Trim()
                                  select d).FirstOrDefault();

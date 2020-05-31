@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="wi200122_pastas_tModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="wi200122_pastas_tEntities2" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="seg_modulo" EntityType="wi200122_pastas_tModel.seg_modulo" />
+    <EntitySet Name="seg_operacion" EntityType="wi200122_pastas_tModel.seg_operacion" />
+    <EntitySet Name="seg_rol" EntityType="wi200122_pastas_tModel.seg_rol" />
+    <EntitySet Name="seg_usuario" EntityType="wi200122_pastas_tModel.seg_usuario" />
+    <AssociationSet Name="FK_seg_operacion_seg_operacion" Association="wi200122_pastas_tModel.FK_seg_operacion_seg_operacion">
+      <End Role="seg_modulo" EntitySet="seg_modulo" />
+      <End Role="seg_operacion" EntitySet="seg_operacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_seg_usuario_seg_rol" Association="wi200122_pastas_tModel.FK_seg_usuario_seg_rol">
+      <End Role="seg_rol" EntitySet="seg_rol" />
+      <End Role="seg_usuario" EntitySet="seg_usuario" />
+    </AssociationSet>
+    <EntitySet Name="seg_rol_operacion" EntityType="wi200122_pastas_tModel.seg_rol_operacion" />
+    <AssociationSet Name="FK_seg_rol_operacion_seg_operacion" Association="wi200122_pastas_tModel.FK_seg_rol_operacion_seg_operacion">
+      <End Role="seg_operacion" EntitySet="seg_operacion" />
+      <End Role="seg_rol_operacion" EntitySet="seg_rol_operacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_seg_rol_operacion_seg_rol" Association="wi200122_pastas_tModel.FK_seg_rol_operacion_seg_rol">
+      <End Role="seg_rol" EntitySet="seg_rol" />
+      <End Role="seg_rol_operacion" EntitySet="seg_rol_operacion" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="seg_modulo">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fecha_alta" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="seg_operacion" Relationship="wi200122_pastas_tModel.FK_seg_operacion_seg_operacion" FromRole="seg_modulo" ToRole="seg_operacion" />
+  </EntityType>
+  <EntityType Name="seg_operacion">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="modulo_id" Type="Int32" />
+    <Property Name="fecha_alta" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="seg_modulo" Relationship="wi200122_pastas_tModel.FK_seg_operacion_seg_operacion" FromRole="seg_operacion" ToRole="seg_modulo" />
+    <NavigationProperty Name="seg_rol_operacion" Relationship="wi200122_pastas_tModel.FK_seg_rol_operacion_seg_operacion" FromRole="seg_operacion" ToRole="seg_rol_operacion" />
+  </EntityType>
+  <EntityType Name="seg_rol">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="fecha_alta" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="seg_usuario" Relationship="wi200122_pastas_tModel.FK_seg_usuario_seg_rol" FromRole="seg_rol" ToRole="seg_usuario" />
+    <NavigationProperty Name="seg_rol_operacion" Relationship="wi200122_pastas_tModel.FK_seg_rol_operacion_seg_rol" FromRole="seg_rol" ToRole="seg_rol_operacion" />
+  </EntityType>
+  <EntityType Name="seg_usuario">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="rol_id" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="fecha_alta" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="seg_rol" Relationship="wi200122_pastas_tModel.FK_seg_usuario_seg_rol" FromRole="seg_usuario" ToRole="seg_rol" />
+  </EntityType>
+  <Association Name="FK_seg_operacion_seg_operacion">
+    <End Type="wi200122_pastas_tModel.seg_modulo" Role="seg_modulo" Multiplicity="0..1" />
+    <End Type="wi200122_pastas_tModel.seg_operacion" Role="seg_operacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="seg_modulo">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="seg_operacion">
+        <PropertyRef Name="modulo_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_seg_usuario_seg_rol">
+    <End Type="wi200122_pastas_tModel.seg_rol" Role="seg_rol" Multiplicity="0..1" />
+    <End Type="wi200122_pastas_tModel.seg_usuario" Role="seg_usuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="seg_rol">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="seg_usuario">
+        <PropertyRef Name="rol_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="seg_rol_operacion">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="rol_id" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="operacion_id" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="fecha_alta" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="seg_operacion" Relationship="wi200122_pastas_tModel.FK_seg_rol_operacion_seg_operacion" FromRole="seg_rol_operacion" ToRole="seg_operacion" />
+    <NavigationProperty Name="seg_rol" Relationship="wi200122_pastas_tModel.FK_seg_rol_operacion_seg_rol" FromRole="seg_rol_operacion" ToRole="seg_rol" />
+  </EntityType>
+  <Association Name="FK_seg_rol_operacion_seg_operacion">
+    <End Type="wi200122_pastas_tModel.seg_operacion" Role="seg_operacion" Multiplicity="0..1" />
+    <End Type="wi200122_pastas_tModel.seg_rol_operacion" Role="seg_rol_operacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="seg_operacion">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="seg_rol_operacion">
+        <PropertyRef Name="operacion_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_seg_rol_operacion_seg_rol">
+    <End Type="wi200122_pastas_tModel.seg_rol" Role="seg_rol" Multiplicity="0..1" />
+    <End Type="wi200122_pastas_tModel.seg_rol_operacion" Role="seg_rol_operacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="seg_rol">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="seg_rol_operacion">
+        <PropertyRef Name="rol_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

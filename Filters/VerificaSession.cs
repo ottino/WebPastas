@@ -10,7 +10,7 @@ namespace WebPastas.Filters
 {
     public class VerificaSession : ActionFilterAttribute
     {
-        private usuario oUsuario;
+        private seg_usuario oUsuario;
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -23,7 +23,7 @@ namespace WebPastas.Filters
                     base.OnActionExecuting(filterContext);
 
                     // Tomo la session del usuario logeado
-                    oUsuario = (usuario)HttpContext.Current.Session["User"];
+                    oUsuario = (seg_usuario)HttpContext.Current.Session["User"];
 
                     if (oUsuario == null)
                     {
