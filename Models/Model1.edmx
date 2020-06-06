@@ -4,7 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="wi200122_pastas_tModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="wi200122_pastas_tModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="seg_modulo">
           <Key>
             <PropertyRef Name="id" />
@@ -99,6 +106,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="wi200122_pastas_tModelStoreContainer">
+          <EntitySet Name="producto" EntityType="Self.producto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="seg_modulo" EntityType="Self.seg_modulo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="seg_operacion" EntityType="Self.seg_operacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="seg_rol" EntityType="Self.seg_rol" Schema="dbo" store:Type="Tables" />
@@ -121,8 +129,7 @@
             <End Role="seg_usuario" EntitySet="seg_usuario" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="wi200122_pastas_tModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -249,7 +256,15 @@
             <End Role="seg_rol" EntitySet="seg_rol" />
             <End Role="seg_usuario" EntitySet="seg_usuario" />
           </AssociationSet>
+          <EntitySet Name="producto" EntityType="wi200122_pastas_tModel.producto" />
         </EntityContainer>
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -303,6 +318,14 @@
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="rol_id" ColumnName="rol_id" />
                 <ScalarProperty Name="fecha_alta" ColumnName="fecha_alta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="producto">
+            <EntityTypeMapping TypeName="wi200122_pastas_tModel.producto">
+              <MappingFragment StoreEntitySet="producto">
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
