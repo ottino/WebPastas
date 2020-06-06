@@ -1,0 +1,24 @@
+﻿@model WebPastas.Models.ViewModels.ProductoViewModel
+@{
+    ViewBag.Title = "Nuevo";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm("Add", "Producto", FormMethod.Post))
+{
+    <div class="row">
+
+        <div class="col-md-8">
+            @Html.LabelFor(d => d.Descripcion)
+            @Html.TextBoxFor(d => d.Descripcion,"", new { @class = "form-control" })
+        </div>
+        
+        <br />
+        
+        <div style="">
+            <input value="Guardar" class="btn btn-primary" type="submit" />
+        </div>
+
+    </div>
+}

@@ -27,5 +27,38 @@ namespace WebPastas.Controllers
 
             return View(listado_productos);
         }
+
+        public ActionResult Add()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Add(ProductoViewModel model)
+        {
+            try
+            {
+                if(ModelState.IsValid) // valida los DataAnotations
+                {
+                    using (wi200122_pastas_tEntities db = new wi200122_pastas_tEntities())
+                    {
+                        var oProducto = new producto();
+                        oProducto.descripcion = model.Descripcion;
+
+                        db.producto.Add(oProducto);
+                        db.SaveChanges();
+
+                    }
+                }
+
+                return Redirect("Producto/");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
     }
 }

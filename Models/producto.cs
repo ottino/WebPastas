@@ -16,5 +16,6 @@ namespace WebPastas.Models
     {
         public int id { get; set; }
         public string descripcion { get; set; }
+        public Nullable<System.DateTime> fecha_alta { get; set; }
     }
 }
