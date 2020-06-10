@@ -31,5 +31,6 @@ namespace WebPastas.Models
         public DbSet<seg_rol_operacion> seg_rol_operacion { get; set; }
         public DbSet<seg_usuario> seg_usuario { get; set; }
         public DbSet<producto> producto { get; set; }
+        public DbSet<stock> stock { get; set; }
     }
 }

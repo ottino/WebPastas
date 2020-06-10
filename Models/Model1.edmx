@@ -11,7 +11,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="descripcion" Type="varchar" MaxLength="100" />
-          <Property Name="fecha_alta" Type="datetime" />
+          <Property Name="fecha_alta" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="seg_modulo">
           <Key>
@@ -56,6 +56,15 @@
           <Property Name="email" Type="varchar" MaxLength="255" />
           <Property Name="password" Type="varchar" MaxLength="255" />
           <Property Name="rol_id" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="fecha_alta" Type="datetime" />
+        </EntityType>
+        <EntityType Name="stock">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="producto_id" Type="int" />
+          <Property Name="cantidad" Type="int" />
           <Property Name="fecha_alta" Type="datetime" />
         </EntityType>
         <Association Name="FK_seg_operacion_seg_operacion">
@@ -106,6 +115,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_stock_producto">
+          <End Role="producto" Type="Self.producto" Multiplicity="0..1" />
+          <End Role="stock" Type="Self.stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="stock">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="wi200122_pastas_tModelStoreContainer">
           <EntitySet Name="producto" EntityType="Self.producto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="seg_modulo" EntityType="Self.seg_modulo" Schema="dbo" store:Type="Tables" />
@@ -113,6 +134,7 @@
           <EntitySet Name="seg_rol" EntityType="Self.seg_rol" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="seg_rol_operacion" EntityType="Self.seg_rol_operacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="seg_usuario" EntityType="Self.seg_usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="stock" EntityType="Self.stock" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_seg_operacion_seg_operacion" Association="Self.FK_seg_operacion_seg_operacion">
             <End Role="seg_modulo" EntitySet="seg_modulo" />
             <End Role="seg_operacion" EntitySet="seg_operacion" />
@@ -128,6 +150,10 @@
           <AssociationSet Name="FK_seg_usuario_seg_rol" Association="Self.FK_seg_usuario_seg_rol">
             <End Role="seg_rol" EntitySet="seg_rol" />
             <End Role="seg_usuario" EntitySet="seg_usuario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_stock_producto" Association="Self.FK_stock_producto">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="stock" EntitySet="stock" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -258,6 +284,11 @@
             <End Role="seg_usuario" EntitySet="seg_usuario" />
           </AssociationSet>
           <EntitySet Name="producto" EntityType="wi200122_pastas_tModel.producto" />
+          <EntitySet Name="stock" EntityType="wi200122_pastas_tModel.stock" />
+          <AssociationSet Name="FK_stock_producto" Association="wi200122_pastas_tModel.FK_stock_producto">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="stock" EntitySet="stock" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="producto">
           <Key>
@@ -265,8 +296,31 @@
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="fecha_alta" Type="DateTime" Precision="3" />
+          <Property Name="fecha_alta" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="stock" Relationship="wi200122_pastas_tModel.FK_stock_producto" FromRole="producto" ToRole="stock" />
         </EntityType>
+        <EntityType Name="stock">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="producto_id" Type="Int32" />
+          <Property Name="cantidad" Type="Int32" />
+          <Property Name="fecha_alta" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="producto" Relationship="wi200122_pastas_tModel.FK_stock_producto" FromRole="stock" ToRole="producto" />
+        </EntityType>
+        <Association Name="FK_stock_producto">
+          <End Type="wi200122_pastas_tModel.producto" Role="producto" Multiplicity="0..1" />
+          <End Type="wi200122_pastas_tModel.stock" Role="stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="stock">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -328,6 +382,16 @@
               <MappingFragment StoreEntitySet="producto">
                 <ScalarProperty Name="fecha_alta" ColumnName="fecha_alta" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stock">
+            <EntityTypeMapping TypeName="wi200122_pastas_tModel.stock">
+              <MappingFragment StoreEntitySet="stock">
+                <ScalarProperty Name="fecha_alta" ColumnName="fecha_alta" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="producto_id" ColumnName="producto_id" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

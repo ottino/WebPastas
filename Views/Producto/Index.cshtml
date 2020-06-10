@@ -1,39 +1,44 @@
 ﻿@model List<WebPastas.Models.ViewModels.ListProductoViewModel>
 
 @{
-    ViewBag.Title = "Productos";
+    ViewBag.Title = "Catalogo de productos";
 }
 
-<h2>@ViewBag.Title</h2>
+<br />
+<br />
 
-<div class="form-group" style="text-align:right;padding:15px">
-    <a class="btn btn-primary">Nuevo</a>
-</div>
+<div>
+    <h2>@ViewBag.Title</h2>
 
-<div class="row">
-    <div class="col-md-12">
-        <table class="table table-bordered table-striped table-hover">
-            <tr>
-                <th>Codigo</th> 
-                <th>Nombre</th> 
-                <th>Fecha de Alta</th> 
-                <th></th> 
-            </tr>
-            @foreach (var oElemento in Model)
-            {
+    <div class="form-group" style="text-align:right;padding:15px">
+        <a href="~/Producto/Add" class="btn btn-primary">Nuevo</a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-striped table-hover">
                 <tr>
-                    <td>@oElemento.id</td>
-                    <td>@oElemento.Descripcion</td>
-                    <td>@oElemento.fecha_alta</td>
-                    <td style="text-align:center">
-                        <a class="btn btn-success">Ver</a>
-                        <a class="btn btn-success">Editar</a>
-                        <a class="btn btn-danger">Eliminar</a>
-                    </td>
+                    <th>Codigo</th>
+                    <th>Nombre</th>
+                    <th>Fecha de Alta</th>
+                    <th></th>
                 </tr>
+                @foreach (var oElemento in Model)
+                {
+                    <tr>
+                        <td>@oElemento.id</td>
+                        <td>@oElemento.Descripcion</td>
+                        <td>@oElemento.fecha_alta.ToString().Substring(0, 9)</td>
+                        <td style="text-align:center">
+                            <a class="btn btn-success">Ver</a>
+                            <a class="btn btn-success" href="~/Producto/Edit/@oElemento.id">Editar</a>
+                            <a class="btn btn-danger"  href="~/Producto/Delete/@oElemento.id">Eliminar</a>
+                        </td>
+                    </tr>
 
-            }
-        </table>
+                }
+            </table>
+        </div>
     </div>
 </div>
 

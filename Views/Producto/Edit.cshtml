@@ -1,7 +1,7 @@
 ﻿@model WebPastas.Models.ViewModels.ProductoViewModel
 
 @{
-    ViewBag.Title = "Agregar producto al catalogo";
+    ViewBag.Title = "Editar datos del producto";
 }
 
 <br />
@@ -10,13 +10,12 @@
 <div>
     <h2>@ViewBag.Title</h2>
 
-    @using (Html.BeginForm("Add", "Producto", FormMethod.Post))
+    @using (Html.BeginForm("Edit", "Producto", FormMethod.Post))
     {
         <div class="row col-md-12">
-            @Html.HiddenFor(d=> d.id)
             @Html.LabelFor(d => d.Descripcion)
             @Html.TextBoxFor(d => d.Descripcion, "", new { @class = "form-control" })
-            @Html.ValidationMessageFor(d => d.Descripcion, null, new { @class = "text-danger" })
+            @Html.ValidationMessageFor(d => d.Descripcion, null, new { @class = "danger" })
         </div>
 
         <br />

@@ -12,17 +12,13 @@ namespace WebPastas.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class producto
+    public partial class stock
     {
-        public producto()
-        {
-            this.stock = new HashSet<stock>();
-        }
-    
         public int id { get; set; }
-        public string descripcion { get; set; }
-        public System.DateTime fecha_alta { get; set; }
+        public Nullable<int> producto_id { get; set; }
+        public Nullable<int> cantidad { get; set; }
+        public Nullable<System.DateTime> fecha_alta { get; set; }
     
-        public virtual ICollection<stock> stock { get; set; }
+        public virtual producto producto { get; set; }
     }
 }

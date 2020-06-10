@@ -5,16 +5,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="b9adfd77c83449389782430d1dbe8724" Name="Diagram1">
-        <EntityTypeShape EntityType="wi200122_pastas_tModel.seg_modulo" Width="1.5" PointX="0.5" PointY="1.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="wi200122_pastas_tModel.seg_operacion" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="wi200122_pastas_tModel.seg_rol" Width="1.5" PointX="6.125" PointY="0.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="wi200122_pastas_tModel.seg_rol_operacion" Width="1.5" PointX="3.875" PointY="0.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="wi200122_pastas_tModel.seg_usuario" Width="1.5" PointX="3.875" PointY="1.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="wi200122_pastas_tModel.seg_modulo" Width="1.5" PointX="1.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="wi200122_pastas_tModel.seg_operacion" Width="1.5" PointX="0.5" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="wi200122_pastas_tModel.seg_rol" Width="1.5" PointX="6" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="wi200122_pastas_tModel.seg_rol_operacion" Width="1.5" PointX="3.375" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="wi200122_pastas_tModel.seg_usuario" Width="1.5" PointX="6" PointY="3.125" IsExpanded="true" />
         <AssociationConnector Association="wi200122_pastas_tModel.FK_seg_operacion_seg_operacion" ManuallyRouted="false" />
         <AssociationConnector Association="wi200122_pastas_tModel.FK_seg_rol_operacion_seg_operacion" ManuallyRouted="false" />
         <AssociationConnector Association="wi200122_pastas_tModel.FK_seg_rol_operacion_seg_rol" ManuallyRouted="false" />
         <AssociationConnector Association="wi200122_pastas_tModel.FK_seg_usuario_seg_rol" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="wi200122_pastas_tModel.producto" Width="1.5" PointX="0.5" PointY="2.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="wi200122_pastas_tModel.producto" Width="1.5" PointX="9" PointY="3.375" />
+        <EntityTypeShape EntityType="wi200122_pastas_tModel.stock" Width="1.5" PointX="11.5" PointY="3.375" />
+        <AssociationConnector Association="wi200122_pastas_tModel.FK_stock_producto" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

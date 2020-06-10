@@ -10,6 +10,6 @@ namespace WebPastas.Models.ViewModels
 
         public int id { get; set; }
         public string Descripcion { get; set; }
-        public string fecha_alta { get; set; }
+        public DateTime fecha_alta { get; set; }
     }
 }

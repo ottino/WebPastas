@@ -1,0 +1,38 @@
+﻿@model List<WebPastas.Models.ViewModels.ListStockViewModel>
+
+@{
+    ViewBag.Title = "Stock de Productos";
+}
+
+<br />
+<br />
+
+<div>
+    <h2>@ViewBag.Title</h2>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-striped table-hover">
+                <tr>
+                    <th>Codigo</th>
+                    <th>Descripcion</th>
+                    <th>Cantidad</th>
+                    <th>Acciones s/stock</th>
+                </tr>
+                @foreach (var oElemento in Model)
+                {
+                    <tr>
+                        <td>@oElemento.Producto_id</td>
+                        <td>@oElemento.Descripcion_producto</td>
+                        <td>@oElemento.Cantidad</td>
+                        <td style="text-align:left">
+                            <a class="btn btn-success">Retirar</a>
+                            <a class="btn btn-success" href="~/Stock/Agregar/@oElemento.Id">Agregar</a>
+                        </td>
+                    </tr>
+
+                }
+            </table>
+        </div>
+    </div>
+</div>

@@ -10,6 +10,7 @@ namespace WebPastas.Models.ViewModels
     {
 
         public int id { get; set; }
+
         [Required]
         [Display(Name ="Descripcion del producto")]
         [StringLength(100)]
