@@ -12,21 +12,10 @@ namespace WebPastas.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class producto
+    public partial class camara
     {
-        public producto()
-        {
-            this.stock = new HashSet<stock>();
-            this.camara_stock = new HashSet<camara_stock>();
-            this.movimiento = new HashSet<movimiento>();
-        }
-    
         public int id { get; set; }
         public string descripcion { get; set; }
-        public System.DateTime fecha_alta { get; set; }
-    
-        public virtual ICollection<stock> stock { get; set; }
-        public virtual ICollection<camara_stock> camara_stock { get; set; }
-        public virtual ICollection<movimiento> movimiento { get; set; }
+        public Nullable<System.DateTime> fecha_registro { get; set; }
     }
 }

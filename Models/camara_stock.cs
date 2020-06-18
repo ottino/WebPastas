@@ -12,21 +12,14 @@ namespace WebPastas.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class seg_usuario
+    public partial class camara_stock
     {
-        public seg_usuario()
-        {
-            this.movimiento = new HashSet<movimiento>();
-        }
+        public int id { get; set; }
+        public int camara_id { get; set; }
+        public Nullable<int> producto_id { get; set; }
+        public Nullable<int> cantidad { get; set; }
+        public Nullable<System.DateTime> fecha_registro { get; set; }
     
-        public decimal id { get; set; }
-        public string nombre { get; set; }
-        public string email { get; set; }
-        public string password { get; set; }
-        public Nullable<decimal> rol_id { get; set; }
-        public Nullable<System.DateTime> fecha_alta { get; set; }
-    
-        public virtual seg_rol seg_rol { get; set; }
-        public virtual ICollection<movimiento> movimiento { get; set; }
+        public virtual producto producto { get; set; }
     }
 }

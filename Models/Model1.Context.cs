@@ -12,6 +12,9 @@ namespace WebPastas.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Objects;
+    using System.Data.Objects.DataClasses;
+    using System.Linq;
     
     public partial class wi200122_pastas_tEntities : DbContext
     {
@@ -32,5 +35,30 @@ namespace WebPastas.Models
         public DbSet<seg_usuario> seg_usuario { get; set; }
         public DbSet<producto> producto { get; set; }
         public DbSet<stock> stock { get; set; }
+        public DbSet<tipo_movimiento> tipo_movimiento { get; set; }
+        public DbSet<camara_stock> camara_stock { get; set; }
+        public DbSet<movimiento> movimiento { get; set; }
+        public DbSet<camara> camara { get; set; }
+    
+        public virtual int sp_movimientos_stock(Nullable<int> tipoMovimiento_id, Nullable<int> camara_id, Nullable<int> producto_id, Nullable<int> cantidad)
+        {
+            var tipoMovimiento_idParameter = tipoMovimiento_id.HasValue ?
+                new ObjectParameter("tipoMovimiento_id", tipoMovimiento_id) :
+                new ObjectParameter("tipoMovimiento_id", typeof(int));
+    
+            var camara_idParameter = camara_id.HasValue ?
+                new ObjectParameter("camara_id", camara_id) :
+                new ObjectParameter("camara_id", typeof(int));
+    
+            var producto_idParameter = producto_id.HasValue ?
+                new ObjectParameter("producto_id", producto_id) :
+                new ObjectParameter("producto_id", typeof(int));
+    
+            var cantidadParameter = cantidad.HasValue ?
+                new ObjectParameter("cantidad", cantidad) :
+                new ObjectParameter("cantidad", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_movimientos_stock", tipoMovimiento_idParameter, camara_idParameter, producto_idParameter, cantidadParameter);
+        }
     }
 }
