@@ -1,0 +1,109 @@
+﻿@model WebPastas.Models.ViewModels.RemitoViewModel
+
+@{
+    ViewBag.Title = "Remito";
+    List<SelectListItem> items_html_tm = (List<SelectListItem>)ViewBag.items_html_tm;
+    List<SelectListItem> items_html_pr = (List<SelectListItem>)ViewBag.items_html_pr;
+}
+
+<br />
+<br />
+
+<h2>@ViewBag.Title</h2>
+<hr />
+@using (Html.BeginForm("Add", "Remito", FormMethod.Post))
+{
+    <div class="row col-md-12">
+
+        <div class="row col-md-6" style="padding-left: 10px;padding-right: 30px;">
+
+            @Html.LabelFor(d => d.tipoMovimiento_id)
+            @Html.DropDownList("tipoMovimiento_id",
+                                                                                                  items_html_tm,
+                                                                                                  "Seleccionar tipo de movimiento",
+                                                                                                  new
+                                                                                                  {
+                                                                                                      @Class = "form-control",
+                                                                                                      @Styles = ""
+                                                                                                  })
+
+            <br />
+            <br />
+
+            @Html.LabelFor(d => d.producto_id)
+            @Html.DropDownList("producto_id",
+                                                                                                  items_html_pr,
+                                                                                                  "Seleccionar Producto",
+                                                                                                  new
+                                                                                                  {
+                                                                                                      @Class = "form-control",
+                                                                                                      @Styles = ""
+                                                                                                  })
+
+
+            <br />
+            <br />
+
+            @Html.LabelFor(d => d.cantidad)
+            @Html.TextBoxFor(d => d.cantidad, "", new { @class = "form-control" })
+
+            <br />
+            <br />
+
+            @Html.LabelFor(d => d.motivo)
+            @Html.TextArea("motivo", null, new { @class = "form-control" })
+
+
+        </div>
+
+        <div class="row col-md-6" style="padding-left: 10px;padding-right: 40px;">
+
+            <label>Destino de la mercaderia</label>
+
+            <fieldset class="form-group">
+                <div class="row">
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo_destino_id" id="tipo_destino_id" value="Camara" checked>
+                            <label class="form-check-label" for="gridRadios1">
+                                Camara
+                            </label>
+                        </div>
+                        <div class="form-check disabled">
+                            <input class="form-check-input" type="radio" name="tipo_destino_id" id="tipo_destino_id" value="Empleado" disabled>
+                            <label class="form-check-label" for="gridRadios2">
+                                Empleado
+                            </label>
+                        </div>
+                        <div class="form-check disabled">
+                            <input class="form-check-input" type="radio" name="tipo_destino_id" id="tipo_destino_id" value="Cliente" disabled>
+                            <label class="form-check-label" for="gridRadios3">
+                                Cliente
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <select id="camara_id" name="camara_id" class="form-control">
+                <option selected>Seleccionar destino</option>
+                <option value="1">Camara Central</option>
+                <option value="2">Camara de venta N-1</option>
+                <option value="3">Camara de venta N-2</option>
+            </select>
+
+            <br />
+            <br />
+            <br />
+
+        </div>
+
+
+    </div>
+
+    <hr />
+    <div class="row col-md-12" style="text-align:end; vertical-align: bottom;">
+        <input value="Generar remito" class="btn btn-success" type="submit" />
+    </div>
+
+}

@@ -5,6 +5,40 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="wi200122_pastas_tModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="camara">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="100" />
+          <Property Name="fecha_registro" Type="datetime" />
+        </EntityType>
+        <EntityType Name="camara_stock">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="camara_id" Type="int" Nullable="false" />
+          <Property Name="producto_id" Type="int" />
+          <Property Name="cantidad" Type="int" />
+          <Property Name="fecha_registro" Type="datetime" />
+        </EntityType>
+        <EntityType Name="movimiento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha_movimiento" Type="datetime" />
+          <Property Name="tipoMovimiento_id" Type="int" />
+          <Property Name="usuario_id" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="producto_id" Type="int" />
+          <Property Name="cantidad" Type="int" />
+          <Property Name="fecha_registro" Type="datetime" />
+          <Property Name="motivo_descripcion" Type="varchar" MaxLength="255" />
+          <Property Name="destino_empleadoId" Type="int" />
+          <Property Name="destino_camaraId" Type="int" />
+          <Property Name="destino_clienteId" Type="int" />
+        </EntityType>
         <EntityType Name="producto">
           <Key>
             <PropertyRef Name="id" />
@@ -67,6 +101,62 @@
           <Property Name="cantidad" Type="int" />
           <Property Name="fecha_alta" Type="datetime" />
         </EntityType>
+        <EntityType Name="tipo_movimiento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="100" />
+          <Property Name="fecha_registro" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_camara_producto">
+          <End Role="producto" Type="Self.producto" Multiplicity="0..1" />
+          <End Role="camara_stock" Type="Self.camara_stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="camara_stock">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_movimiento_producto">
+          <End Role="producto" Type="Self.producto" Multiplicity="0..1" />
+          <End Role="movimiento" Type="Self.movimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="movimiento">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_movimiento_seg_usuario">
+          <End Role="seg_usuario" Type="Self.seg_usuario" Multiplicity="0..1" />
+          <End Role="movimiento" Type="Self.movimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seg_usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="movimiento">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_movimiento_tipo_movimiento">
+          <End Role="tipo_movimiento" Type="Self.tipo_movimiento" Multiplicity="0..1" />
+          <End Role="movimiento" Type="Self.movimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo_movimiento">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="movimiento">
+              <PropertyRef Name="tipoMovimiento_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_seg_operacion_seg_operacion">
           <End Role="seg_modulo" Type="Self.seg_modulo" Multiplicity="0..1" />
           <End Role="seg_operacion" Type="Self.seg_operacion" Multiplicity="*" />
@@ -127,7 +217,16 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="sp_movimientos_stock" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="tipoMovimiento_id" Type="int" Mode="In" />
+          <Parameter Name="camara_id" Type="int" Mode="In" />
+          <Parameter Name="producto_id" Type="int" Mode="In" />
+          <Parameter Name="cantidad" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="wi200122_pastas_tModelStoreContainer">
+          <EntitySet Name="camara" EntityType="Self.camara" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="camara_stock" EntityType="Self.camara_stock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="movimiento" EntityType="Self.movimiento" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="producto" EntityType="Self.producto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="seg_modulo" EntityType="Self.seg_modulo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="seg_operacion" EntityType="Self.seg_operacion" Schema="dbo" store:Type="Tables" />
@@ -135,6 +234,23 @@
           <EntitySet Name="seg_rol_operacion" EntityType="Self.seg_rol_operacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="seg_usuario" EntityType="Self.seg_usuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="stock" EntityType="Self.stock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tipo_movimiento" EntityType="Self.tipo_movimiento" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_camara_producto" Association="Self.FK_camara_producto">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="camara_stock" EntitySet="camara_stock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_movimiento_producto" Association="Self.FK_movimiento_producto">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="movimiento" EntitySet="movimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_movimiento_seg_usuario" Association="Self.FK_movimiento_seg_usuario">
+            <End Role="seg_usuario" EntitySet="seg_usuario" />
+            <End Role="movimiento" EntitySet="movimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_movimiento_tipo_movimiento" Association="Self.FK_movimiento_tipo_movimiento">
+            <End Role="tipo_movimiento" EntitySet="tipo_movimiento" />
+            <End Role="movimiento" EntitySet="movimiento" />
+          </AssociationSet>
           <AssociationSet Name="FK_seg_operacion_seg_operacion" Association="Self.FK_seg_operacion_seg_operacion">
             <End Role="seg_modulo" EntitySet="seg_modulo" />
             <End Role="seg_operacion" EntitySet="seg_operacion" />
@@ -212,6 +328,7 @@
           <Property Name="rol_id" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="fecha_alta" Type="DateTime" Precision="3" />
           <NavigationProperty Name="seg_rol" Relationship="Self.FK_seg_usuario_seg_rol" FromRole="seg_usuario" ToRole="seg_rol" />
+          <NavigationProperty Name="movimiento" Relationship="wi200122_pastas_tModel.FK_movimiento_seg_usuario" FromRole="seg_usuario" ToRole="movimiento" />
         </EntityType>
         <Association Name="FK_seg_operacion_seg_operacion">
           <End Role="seg_modulo" Type="Self.seg_modulo" Multiplicity="0..1" />
@@ -289,7 +406,33 @@
             <End Role="producto" EntitySet="producto" />
             <End Role="stock" EntitySet="stock" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="tipo_movimiento" EntityType="wi200122_pastas_tModel.tipo_movimiento" />
+          <EntitySet Name="camara_stock" EntityType="wi200122_pastas_tModel.camara_stock" />
+          <EntitySet Name="movimiento" EntityType="wi200122_pastas_tModel.movimiento" />
+          <AssociationSet Name="FK_camara_producto1" Association="wi200122_pastas_tModel.FK_camara_producto1">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="camara_stock" EntitySet="camara_stock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_movimiento_producto" Association="wi200122_pastas_tModel.FK_movimiento_producto">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="movimiento" EntitySet="movimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_movimiento_seg_usuario" Association="wi200122_pastas_tModel.FK_movimiento_seg_usuario">
+            <End Role="seg_usuario" EntitySet="seg_usuario" />
+            <End Role="movimiento" EntitySet="movimiento" />
+          </AssociationSet>
+          <AssociationSet Name="FK_movimiento_tipo_movimiento" Association="wi200122_pastas_tModel.FK_movimiento_tipo_movimiento">
+            <End Role="tipo_movimiento" EntitySet="tipo_movimiento" />
+            <End Role="movimiento" EntitySet="movimiento" />
+          </AssociationSet>
+          <FunctionImport Name="sp_movimientos_stock">
+            <Parameter Name="tipoMovimiento_id" Mode="In" Type="Int32" />
+            <Parameter Name="camara_id" Mode="In" Type="Int32" />
+            <Parameter Name="producto_id" Mode="In" Type="Int32" />
+            <Parameter Name="cantidad" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="camara" EntityType="wi200122_pastas_tModel.camara" />
+          </EntityContainer>
         <EntityType Name="producto">
           <Key>
             <PropertyRef Name="id" />
@@ -298,6 +441,8 @@
           <Property Name="descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="fecha_alta" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="stock" Relationship="wi200122_pastas_tModel.FK_stock_producto" FromRole="producto" ToRole="stock" />
+          <NavigationProperty Name="camara_stock" Relationship="wi200122_pastas_tModel.FK_camara_producto1" FromRole="producto" ToRole="camara_stock" />
+          <NavigationProperty Name="movimiento" Relationship="wi200122_pastas_tModel.FK_movimiento_producto" FromRole="producto" ToRole="movimiento" />
         </EntityType>
         <EntityType Name="stock">
           <Key>
@@ -321,7 +466,102 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="tipo_movimiento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_registro" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="movimiento" Relationship="wi200122_pastas_tModel.FK_movimiento_tipo_movimiento" FromRole="tipo_movimiento" ToRole="movimiento" />
+        </EntityType>
+        <EntityType Name="camara_stock">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="camara_id" Type="Int32" Nullable="false" />
+          <Property Name="producto_id" Type="Int32" />
+          <Property Name="cantidad" Type="Int32" />
+          <Property Name="fecha_registro" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="producto" Relationship="wi200122_pastas_tModel.FK_camara_producto1" FromRole="camara_stock" ToRole="producto" />
+        </EntityType>
+        <EntityType Name="movimiento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha_movimiento" Type="DateTime" Precision="3" />
+          <Property Name="tipoMovimiento_id" Type="Int32" />
+          <Property Name="usuario_id" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="producto_id" Type="Int32" />
+          <Property Name="cantidad" Type="Int32" />
+          <Property Name="fecha_registro" Type="DateTime" Precision="3" />
+          <Property Name="motivo_descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="destino_empleadoId" Type="Int32" />
+          <Property Name="destino_camaraId" Type="Int32" />
+          <Property Name="destino_clienteId" Type="Int32" />
+          <NavigationProperty Name="producto" Relationship="wi200122_pastas_tModel.FK_movimiento_producto" FromRole="movimiento" ToRole="producto" />
+          <NavigationProperty Name="seg_usuario" Relationship="wi200122_pastas_tModel.FK_movimiento_seg_usuario" FromRole="movimiento" ToRole="seg_usuario" />
+          <NavigationProperty Name="tipo_movimiento" Relationship="wi200122_pastas_tModel.FK_movimiento_tipo_movimiento" FromRole="movimiento" ToRole="tipo_movimiento" />
+        </EntityType>
+        <Association Name="FK_camara_producto1">
+          <End Type="wi200122_pastas_tModel.producto" Role="producto" Multiplicity="0..1" />
+          <End Type="wi200122_pastas_tModel.camara_stock" Role="camara_stock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="camara_stock">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_movimiento_producto">
+          <End Type="wi200122_pastas_tModel.producto" Role="producto" Multiplicity="0..1" />
+          <End Type="wi200122_pastas_tModel.movimiento" Role="movimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="movimiento">
+              <PropertyRef Name="producto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_movimiento_seg_usuario">
+          <End Type="wi200122_pastas_tModel.seg_usuario" Role="seg_usuario" Multiplicity="0..1" />
+          <End Type="wi200122_pastas_tModel.movimiento" Role="movimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="seg_usuario">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="movimiento">
+              <PropertyRef Name="usuario_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_movimiento_tipo_movimiento">
+          <End Type="wi200122_pastas_tModel.tipo_movimiento" Role="tipo_movimiento" Multiplicity="0..1" />
+          <End Type="wi200122_pastas_tModel.movimiento" Role="movimiento" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tipo_movimiento">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="movimiento">
+              <PropertyRef Name="tipoMovimiento_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="camara">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="fecha_registro" Type="DateTime" Precision="3" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -392,6 +632,53 @@
                 <ScalarProperty Name="fecha_alta" ColumnName="fecha_alta" />
                 <ScalarProperty Name="cantidad" ColumnName="cantidad" />
                 <ScalarProperty Name="producto_id" ColumnName="producto_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tipo_movimiento">
+            <EntityTypeMapping TypeName="wi200122_pastas_tModel.tipo_movimiento">
+              <MappingFragment StoreEntitySet="tipo_movimiento">
+                <ScalarProperty Name="fecha_registro" ColumnName="fecha_registro" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="camara_stock">
+            <EntityTypeMapping TypeName="wi200122_pastas_tModel.camara_stock">
+              <MappingFragment StoreEntitySet="camara_stock">
+                <ScalarProperty Name="fecha_registro" ColumnName="fecha_registro" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="producto_id" ColumnName="producto_id" />
+                <ScalarProperty Name="camara_id" ColumnName="camara_id" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="movimiento">
+            <EntityTypeMapping TypeName="wi200122_pastas_tModel.movimiento">
+              <MappingFragment StoreEntitySet="movimiento">
+                <ScalarProperty Name="destino_clienteId" ColumnName="destino_clienteId" />
+                <ScalarProperty Name="destino_camaraId" ColumnName="destino_camaraId" />
+                <ScalarProperty Name="destino_empleadoId" ColumnName="destino_empleadoId" />
+                <ScalarProperty Name="motivo_descripcion" ColumnName="motivo_descripcion" />
+                <ScalarProperty Name="fecha_registro" ColumnName="fecha_registro" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="producto_id" ColumnName="producto_id" />
+                <ScalarProperty Name="usuario_id" ColumnName="usuario_id" />
+                <ScalarProperty Name="tipoMovimiento_id" ColumnName="tipoMovimiento_id" />
+                <ScalarProperty Name="fecha_movimiento" ColumnName="fecha_movimiento" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="sp_movimientos_stock" FunctionName="wi200122_pastas_tModel.Store.sp_movimientos_stock" />
+          <EntitySetMapping Name="camara">
+            <EntityTypeMapping TypeName="wi200122_pastas_tModel.camara">
+              <MappingFragment StoreEntitySet="camara">
+                <ScalarProperty Name="fecha_registro" ColumnName="fecha_registro" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
